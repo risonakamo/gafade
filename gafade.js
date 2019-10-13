@@ -1,17 +1,23 @@
-var _fadeNames=new Set([
-    "Bokutachi wa Benkyou ga Dekinai 2",
-    "Sword Art Online: Alicization - War of Underworld"
-]);
+var _fadeNames;
 
 function main()
 {
     document.head.insertAdjacentHTML("beforeend",`<link rel="stylesheet" href="${chrome.runtime.getURL("gafade.css")}">`);
-    doFade();
 
     var observer=new MutationObserver(doFade);
-
     observer.observe(document.querySelector("#load_recent_release"),{
         childList:true
+    });
+
+    chrome.storage.local.get("fadenames",(data)=>{
+        data=data.fadenames;
+        if (!data)
+        {
+            data=[];
+        }
+
+        _fadeNames=new Set(data);
+        doFade();
     });
 }
 
@@ -57,9 +63,27 @@ function createFadeButton(parentShowBox,showname)
         {
             _fadeNames.add(showname);
         }
+
+        updateStorageFadeNames();
     });
 
     return element;
 }
 
+//update the localstorage fadenames, debounced for 1 second
+var updateStorageDebounce;
+function updateStorageFadeNames()
+{
+    clearTimeout(updateStorageDebounce);
+    updateStorageDebounce=setTimeout(()=>{
+        chrome.storage.local.set({fadenames:Array.from(_fadeNames)});
+    },300);
+}
+
+function clearFadeStorage()
+{
+    chrome.storage.local.clear();
+}
+
+// clearFadeStorage(); //uncomment to clear out storage
 main();

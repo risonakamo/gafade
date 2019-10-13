@@ -1,4 +1,5 @@
 type localStorage
 {
-
+    # array of names of shows to be faded out
+    fadenames:[string]
 }
