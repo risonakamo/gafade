@@ -5,6 +5,7 @@ const fadeNames=new Set([
 
 function main()
 {
+    document.head.insertAdjacentHTML("beforeend",`<link rel="stylesheet" href="${chrome.runtime.getURL("gafade.css")}">`);
     doFade();
 
     var observer=new MutationObserver(doFade);
@@ -25,7 +26,28 @@ function doFade()
         {
             showItems[x].style.opacity=.2;
         }
+
+        showItems[x].insertAdjacentElement("afterbegin",createFadeButton(showItems[x]));
     }
+}
+
+//create a fade button element
+//parentShowBox: element that gets faded when this element is clicked
+function createFadeButton(parentShowBox)
+{
+    var element=document.createElement("div");
+    element.innerHTML=`
+        <div class="set-fade">toggle fade</div>
+    `;
+
+    element=element.firstElementChild;
+
+    element.addEventListener("click",(e)=>{
+        e.preventDefault();
+        parentShowBox.classList.toggle("faded");
+    });
+
+    return element;
 }
 
 main();

@@ -1,0 +1,25 @@
+.set-fade
+{
+    display: flex;
+    position: absolute;
+    width: 100%;
+    height: 20%;
+    z-index: 10;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    cursor: pointer;
+    background-color: #ffc119;
+    color: #1b1b1b;
+    transition: opacity .2s;
+}
+
+.set-fade:hover
+{
+    opacity: 1;
+}
+
+.faded
+{
+    opacity: .2;
+}
