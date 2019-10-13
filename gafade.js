@@ -1,4 +1,4 @@
-const fadeNames=new Set([
+var _fadeNames=new Set([
     "Bokutachi wa Benkyou ga Dekinai 2",
     "Sword Art Online: Alicization - War of Underworld"
 ]);
@@ -20,20 +20,22 @@ function doFade()
 {
     var showItems=document.querySelectorAll(".items li");
 
+    var showname;
     for (var x=0,l=showItems.length;x<l;x++)
     {
-        if (fadeNames.has(showItems[x].children[1].innerText))
+        showname=showItems[x].children[1].innerText;
+        if (_fadeNames.has(showname))
         {
-            showItems[x].style.opacity=.2;
+            showItems[x].classList.add("faded");
         }
 
-        showItems[x].insertAdjacentElement("afterbegin",createFadeButton(showItems[x]));
+        showItems[x].insertAdjacentElement("afterbegin",createFadeButton(showItems[x],showname));
     }
 }
 
 //create a fade button element
 //parentShowBox: element that gets faded when this element is clicked
-function createFadeButton(parentShowBox)
+function createFadeButton(parentShowBox,showname)
 {
     var element=document.createElement("div");
     element.innerHTML=`
@@ -45,6 +47,16 @@ function createFadeButton(parentShowBox)
     element.addEventListener("click",(e)=>{
         e.preventDefault();
         parentShowBox.classList.toggle("faded");
+
+        if (_fadeNames.has(showname))
+        {
+            _fadeNames.delete(showname);
+        }
+
+        else
+        {
+            _fadeNames.add(showname);
+        }
     });
 
     return element;
