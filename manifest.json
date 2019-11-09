@@ -3,6 +3,7 @@
     "name":"GA Fade",
     "description":"add fade functionality to GA site",
     "version":"1.0.1",
+    "homepage_url":"https://github.com/risonakamo/gafade",
 
     "permissions":["tabs","activeTab","storage","https://www9.gogoanime.io/","https://www10.gogoanime.io/"],
 
