@@ -23,3 +23,9 @@
 {
     opacity: .2;
 }
+
+.focused
+{
+    outline: 4px solid #00a651;
+    background-color: #00a651;
+}

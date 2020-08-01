@@ -1,6 +1,6 @@
 {
   "name": "gafade",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "scripts": {
     "watch":"tsc --watch",
     "build":"tsc"
