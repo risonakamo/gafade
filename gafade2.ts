@@ -1,18 +1,25 @@
 async function main():Promise<void>
 {
     document.head.insertAdjacentHTML("beforeend",
-        `<link rel="stylesheet" href="${chrome.runtime.getURL("gafade.css")}">`);
+        `<link rel="stylesheet" href="${chrome.runtime.getURL("/gafade.css")}">`);
 
     var storageAccess:StorageAccess=new StorageAccess();
-
     var fadenames:Set<string>=await storageAccess.getFadeNames();
 
-    doFade(fadenames);
+    var observer:MutationObserver=new MutationObserver(()=>{
+        doFade(fadenames,storageAccess.toggleFade);
+    });
+    observer.observe(document.querySelector("#load_recent_release") as Node,{
+        childList:true
+    });
+
+    doFade(fadenames,storageAccess.toggleFade);
 }
 
 // target all items and fade them if they are in the given fade names set
-function doFade(fadeNames:Set<string>):void
+function doFade(fadeNames:Set<string>,fadeAction:(name:string)=>void):void
 {
+    console.log("doing fade");
     var showItems:NodeListOf<HTMLElement>=document.querySelectorAll(".items li");
 
     var showname;
@@ -26,7 +33,7 @@ function doFade(fadeNames:Set<string>):void
 
         showItems[x].insertAdjacentElement(
             "afterbegin",
-            createFadeButton(showItems[x],showname)
+            createFadeButton(showItems[x],showname,fadeAction)
         );
     }
 }
@@ -34,7 +41,9 @@ function doFade(fadeNames:Set<string>):void
 // create a fade button element
 // parentShowBox: element that gets faded when this element is clicked
 // showname: name of the show of the box
-function createFadeButton(parentShowBox:HTMLElement,showname:string):HTMLElement
+// fadeAction: callback to call with name that is being fade-toggled
+function createFadeButton(parentShowBox:HTMLElement,showname:string,
+    fadeAction:(name:string)=>void):HTMLElement
 {
     var element:HTMLElement=document.createElement("div");
     element.innerHTML=`
@@ -47,17 +56,8 @@ function createFadeButton(parentShowBox:HTMLElement,showname:string):HTMLElement
         e.preventDefault();
         parentShowBox.classList.toggle("faded");
 
-        // if (_fadeNames.has(showname))
-        // {
-        //     _fadeNames.delete(showname);
-        // }
+        fadeAction(showname);
 
-        // else
-        // {
-        //     _fadeNames.add(showname);
-        // }
-
-        // updateStorageFadeNames();
     });
 
     return element;
@@ -65,6 +65,14 @@ function createFadeButton(parentShowBox:HTMLElement,showname:string):HTMLElement
 
 class StorageAccess
 {
+    cachedFadeNames?:Set<string>
+    updateFadeNamesDebounce:number=0
+
+    constructor()
+    {
+        this.toggleFade=this.toggleFade.bind(this);
+    }
+
     // get fade names
     async getFadeNames():Promise<Set<string>>
     {
@@ -73,6 +81,38 @@ class StorageAccess
                 resolve(new Set(x.fadeNames || []));
             });
         });
+    }
+
+    // toggle the given name in the fadenames list
+    async toggleFade(name:string):Promise<void>
+    {
+        if (!this.cachedFadeNames)
+        {
+            this.cachedFadeNames=await this.getFadeNames();
+        }
+
+        if (this.cachedFadeNames.has(name))
+        {
+            this.cachedFadeNames.delete(name);
+        }
+
+        else
+        {
+            this.cachedFadeNames.add(name);
+        }
+
+        this.updateFadeNames(this.cachedFadeNames);
+    }
+
+    // set the fade names in the database. debounced. clears the
+    // cached fade names
+    updateFadeNames(fadenames:Set<string>):void
+    {
+        clearTimeout(this.updateFadeNamesDebounce);
+        this.updateFadeNamesDebounce=setTimeout(()=>{
+            chrome.storage.local.set({fadeNames:Array.from(fadenames)});
+            this.cachedFadeNames=undefined;
+        },300);
     }
 }
 

@@ -9,15 +9,16 @@
         "https://www10.gogoanime.io/","https://gogoanime.movie/",
         "https://www11.gogoanime.io/","https://www12.gogoanime.io/",
         "https://www15.gogoanime.io/","https://www16.gogoanime.io/",
-        "https://www17.gogoanime.io/"],
+        "https://www17.gogoanime.io/","https://www19.gogoanime.io/"],
 
     "content_scripts":[
         {
             "matches":["https://www9.gogoanime.io/","https://www10.gogoanime.io/",
                 "https://gogoanime.movie/","https://www11.gogoanime.io/",
                 "https://www12.gogoanime.io/","https://www15.gogoanime.io/",
-                "https://www16.gogoanime.io/","https://www17.gogoanime.io/"],
-            "js":["gafade.js"],
+                "https://www16.gogoanime.io/","https://www17.gogoanime.io/",
+                "https://www19.gogoanime.io/"],
+            "js":["build/gafade2.js"],
             "run_at":"document_end"
         }
     ],
