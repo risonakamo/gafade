@@ -4,22 +4,24 @@ async function main():Promise<void>
         `<link rel="stylesheet" href="${chrome.runtime.getURL("/gafade.css")}">`);
 
     var storageAccess:StorageAccess=new StorageAccess();
-    var fadenames:Set<string>=await storageAccess.getFadeNames();
 
-    var observer:MutationObserver=new MutationObserver(()=>{
+    // -- initial fade --
+    var fadenames:Set<string>=await storageAccess.getFadeNames();
+    doFade(fadenames,storageAccess.toggleFade);
+
+    // -- setting up page change observer --
+    var observer:MutationObserver=new MutationObserver(async ()=>{
+        fadenames=await storageAccess.getFadeNames();
         doFade(fadenames,storageAccess.toggleFade);
     });
     observer.observe(document.querySelector("#load_recent_release") as Node,{
         childList:true
     });
-
-    doFade(fadenames,storageAccess.toggleFade);
 }
 
 // target all items and fade them if they are in the given fade names set
 function doFade(fadeNames:Set<string>,fadeAction:(name:string)=>void):void
 {
-    console.log("doing fade");
     var showItems:NodeListOf<HTMLElement>=document.querySelectorAll(".items li");
 
     var showname;
