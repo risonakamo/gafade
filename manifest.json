@@ -2,7 +2,7 @@
     "manifest_version":2,
     "name":"GA Fade",
     "description":"add fade functionality to GA site",
-    "version":"2.1.2",
+    "version":"2.1.3",
     "homepage_url":"https://github.com/risonakamo/gafade",
 
     "permissions":["tabs","activeTab","storage","https://www9.gogoanime.io/",
@@ -10,7 +10,8 @@
         "https://www11.gogoanime.io/","https://www12.gogoanime.io/",
         "https://www15.gogoanime.io/","https://www16.gogoanime.io/",
         "https://www17.gogoanime.io/","https://www19.gogoanime.io/",
-        "https://www.gogoanime.movie/","https://www1.gogoanime.movie/"],
+        "https://www.gogoanime.movie/","https://www1.gogoanime.movie/",
+        "https://gogoanime.so/"],
 
     "content_scripts":[
         {
@@ -19,7 +20,7 @@
                 "https://www12.gogoanime.io/","https://www15.gogoanime.io/",
                 "https://www16.gogoanime.io/","https://www17.gogoanime.io/",
                 "https://www19.gogoanime.io/","https://www.gogoanime.movie/",
-                "https://www1.gogoanime.movie/"],
+                "https://www1.gogoanime.movie/","https://gogoanime.so/"],
             "js":["build/gafade2.js"],
             "run_at":"document_end"
         }
