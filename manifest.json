@@ -2,7 +2,7 @@
     "manifest_version":2,
     "name":"GA Fade",
     "description":"add fade functionality to GA site",
-    "version":"2.1.6",
+    "version":"2.1.7",
     "homepage_url":"https://github.com/risonakamo/gafade",
 
     "permissions":["tabs","activeTab","storage","https://www9.gogoanime.io/",
