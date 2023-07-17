@@ -14,7 +14,8 @@
         "https://gogoanime.so/","https://www9.gogoanimehub.tv/",
         "https://www10.gogoanimehub.tv/","https://gogoanimeapp.com/",
         "https://ww2.gogoanimes.org/","https://gogoanime.mom/home/",
-        "https://ww4.gogoanimes.org/","https://ww5.gogoanimes.org/"],
+        "https://ww4.gogoanimes.org/","https://ww5.gogoanimes.org/",
+        "https://ww6.gogoanimes.org/"],
 
     "content_scripts":[
         {
@@ -27,7 +28,8 @@
                 "https://www9.gogoanimehub.tv/","https://www10.gogoanimehub.tv/",
                 "https://gogoanimeapp.com/","https://ww2.gogoanimes.org/",
                 "https://ww3.gogoanimes.org/","https://gogoanime.mom/home/",
-                "https://ww4.gogoanimes.org/","https://ww5.gogoanimes.org/"],
+                "https://ww4.gogoanimes.org/","https://ww5.gogoanimes.org/",
+                "https://ww6.gogoanimes.org/"],
             "js":["build/gafade2.js"],
             "run_at":"document_end"
         }
